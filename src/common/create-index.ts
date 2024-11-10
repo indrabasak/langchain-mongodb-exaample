@@ -16,39 +16,6 @@ async function main() {
     await db.command({ ping: 1 });
     console.log('Pinged your deployment. You successfully connected to MongoDB!');
 
-    // const db = client.db('hr_database');
-    const collection = db.collection('employees');
-
-    // define your Atlas Vector Search index
-    // const index = {
-    //   name: 'vector_index',
-    //   type: 'vectorSearch',
-    //   definition: {
-    //     fields: [
-    //       {
-    //         type: 'hnsw',
-    //         path: 'embedding',
-    //         similarity: 'cosine',
-    //         numDimensions: 1536,
-    //       },
-    //     ],
-    //   },
-    // };
-    // run the helper method
-    // const result = await collection.createSearchIndex(index);
-    // console.log(result);
-
-    //{
-    //   "fields": [
-    //     {
-    //       "numDimensions": 1536,
-    //       "path": "embedding",
-    //       "similarity": "cosine",
-    //       "type": "vector"
-    //     }
-    //   ]
-    // }
-
     await db.command({
       createIndexes: 'employees',
       indexes: [
@@ -63,18 +30,6 @@ async function main() {
         },
       ],
     });
-
-    // await collection.createIndex(
-    //   { embedding: 'vector' },
-    //   {
-    //     name: 'vector_index',
-    //     vectorOptions: {
-    //       type: 'hnsw',
-    //       dimensions: 1536,
-    //       similarity: 'cosine',
-    //     },
-    //   },
-    // );
   } catch (error) {
     console.error('Error seeding database:', error);
   } finally {

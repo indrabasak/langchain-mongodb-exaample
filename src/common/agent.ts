@@ -1,4 +1,3 @@
-import { MongoUtil } from './mongo-util';
 import { tool } from '@langchain/core/tools';
 import { MongoDBAtlasVectorSearch } from '@langchain/mongodb';
 import { AzureChatOpenAI, AzureOpenAIEmbeddings } from '@langchain/openai';
@@ -13,7 +12,8 @@ import { DynamicStructuredTool } from '@langchain/core/dist/tools';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
 import { MongoDBSaver } from '@langchain/langgraph-checkpoint-mongodb';
 import { CompiledStateGraph } from '@langchain/langgraph/dist/graph/state';
-import { State } from './State';
+import { MongoUtil } from './mongo-util';
+import { State } from './state';
 
 export class Agent {
   private static readonly COLLECTION_NAME: string = 'employee';
@@ -39,14 +39,6 @@ export class Agent {
     azureOpenAIApiVersion: string,
     util: MongoUtil,
   ) {
-    console.log('azureTenantId', azureTenantId);
-    console.log('azureClientId', azureClientId);
-    console.log('azureClientSecret', azureClientSecret);
-    console.log('azureAuthorityHost', azureAuthorityHost);
-    console.log('azureOpenAIApiInstanceName', azureOpenAIApiInstanceName);
-    console.log('azureOpenAIApiDeploymentName', azureOpenAIApiDeploymentName);
-    console.log('azureOpenAIApiVersion', azureOpenAIApiVersion);
-
     this.util = util;
     const credential = new ClientSecretCredential(azureTenantId, azureClientId, azureClientSecret, {
       authorityHost: azureAuthorityHost,
@@ -140,7 +132,7 @@ export class Agent {
   }
 
   private async createTool(collection: Collection) {
-    const employeeLookupTool = tool(
+    return tool(
       async ({ query, n = 10 }): Promise<string> => {
         console.log('Employee lookup tool called');
 
@@ -166,8 +158,6 @@ export class Agent {
         }),
       },
     );
-
-    return employeeLookupTool;
   }
 
   // Define the function that determines whether to continue or not

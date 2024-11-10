@@ -2,14 +2,14 @@
   "name": "langchain-mongodb-example",
   "packageManager": "yarn@4.5.1",
   "scripts": {
-    "build:common": "tsc --project src/common",
-    "build:functest": "tsc --project src/functional-test",
+    "build": "tsc --project src/functional-test",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "jest --silent --coverage",
     "seed": "node --env-file .env.local dist/common/seed-database.js",
     "create-index": "node --env-file .env.local dist/common/create-index.js",
-    "test-agent": "node --env-file .env.local dist/functional-test/agent-test.js"
+    "test-agent": "node --env-file .env.local dist/functional-test/agent-test.js",
+    "start-server": "node --env-file .env.local dist/common/index.js"
   },
   "jestSonar": {
     "reportPath": "test-reports",
@@ -57,6 +57,7 @@
     "@langchain/textsplitters": "^0.1.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "lodash": "^4.17.21",
     "mongodb": "^6.10.0",
     "zod": "^3.23.8"
